@@ -37,7 +37,7 @@
 
 1. 克隆项目:
 ```bash
-git clone [repository-url]
+git clone https://github.com/Jie-start/love-site.git
 cd love-site
 ```
 
