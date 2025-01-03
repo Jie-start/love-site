@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}地点记录 - 恋爱记录{% endblock %}
+
+{% block extra_css %}
+<style>
+    .place-card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .place-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .place-image {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .place-card .card-body {
+        padding: 1.5rem;
+    }
+
+    .date-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255, 75, 125, 0.9);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">地点记录</h2>
+        <a href="{% url 'place_create' %}" class="btn btn-love">
+            <i class="fas fa-plus"></i> 新增地点
+        </a>
+    </div>
+
+    {% if places %}
+    <div class="row">
+        {% for place in places %}
+        <div class="col-md-4 mb-4">
+            <div class="card place-card">
+                {% if place.photo %}
+                <img src="{{ place.photo.url }}" class="card-img-top place-image" alt="{{ place.name }}">
+                {% else %}
+                <img src="{% static 'images/default-place.jpg' %}" class="card-img-top place-image" alt="默认图片">
+                {% endif %}
+                <span class="date-badge">{{ place.visit_date|date:"Y-m-d" }}</span>
+                <div class="card-body">
+                    <h5 class="card-title">{{ place.name }}</h5>
+                    <p class="card-text text-muted">{{ place.location }}</p>
+                    <p class="card-text">{{ place.description|truncatechars:100 }}</p>
+                    <a href="{% url 'place_detail' place.pk %}" class="btn btn-love">查看详情</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <p class="lead text-muted">还没有记录任何地点</p>
+        <a href="{% url 'place_create' %}" class="btn btn-love">
+            <i class="fas fa-plus"></i> 添加第一个地点
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 

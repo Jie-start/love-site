@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}登录 - 恋爱记录{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-section {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+    }
+    
+    .form-control:focus {
+        border-color: #ff4b7d;
+        box-shadow: 0 0 0 0.2rem rgba(255, 75, 125, 0.25);
+    }
+    
+    .btn-love {
+        background-color: #ff4b7d;
+        border: none;
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="login-section">
+        <h2 class="text-center mb-4">登录</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">用户名</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">密码</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            {% if messages %}
+            <div class="alert alert-danger">
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="text-center">
+                <button type="submit" class="btn btn-love">登录</button>
+            </div>
+            <div class="text-center mt-3">
+                <p>还没有账号？<a href="{% url 'signup' %}" class="text-decoration-none">立即注册</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,15 @@
+name: love-site
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - django=4.2
+  - pillow=10.0.0
+  - djangorestframework=3.14.0
+  - django-cors-headers=4.2.0
+  - requests=2.31.0
+  - pymysql
+  - pip
+  - pip:
+    - clerk-sdk-python 

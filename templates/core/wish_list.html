@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}心愿清单 - 恋爱记录{% endblock %}
+
+{% block extra_css %}
+<style>
+    .wish-card {
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1rem;
+    }
+
+    .wish-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .wish-completed {
+        background-color: #f8f9fa;
+    }
+
+    .wish-completed .card-title,
+    .wish-completed .card-text {
+        text-decoration: line-through;
+        color: #6c757d;
+    }
+
+    .toggle-button {
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .toggle-button:hover {
+        background-color: #f8f9fa;
+    }
+
+    .toggle-button.completed {
+        color: #28a745;
+    }
+
+    .toggle-button.pending {
+        color: #6c757d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">心愿清单</h2>
+        <a href="{% url 'wish_create' %}" class="btn btn-love">
+            <i class="fas fa-plus"></i> 新增心愿
+        </a>
+    </div>
+
+    {% if wishes %}
+    <div class="row">
+        {% for wish in wishes %}
+        <div class="col-md-6">
+            <div class="card wish-card {% if wish.status == 'completed' %}wish-completed{% endif %}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title">{{ wish.title }}</h5>
+                            <p class="card-text">{{ wish.description }}</p>
+                            <small class="text-muted">{{ wish.user.username }} - {{ wish.created_at|date:"Y-m-d" }}</small>
+                        </div>
+                        <form method="post" action="{% url 'wish_toggle_status' wish.pk %}" class="ms-3">
+                            {% csrf_token %}
+                            <button type="submit" class="btn toggle-button {% if wish.status == 'completed' %}completed{% else %}pending{% endif %}">
+                                <i class="fas {% if wish.status == 'completed' %}fa-check-circle{% else %}fa-circle{% endif %} fa-2x"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <p class="lead text-muted">还没有添加任何心愿</p>
+        <a href="{% url 'wish_create' %}" class="btn btn-love">
+            <i class="fas fa-plus"></i> 添加第一个心愿
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %} 
